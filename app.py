@@ -143,7 +143,7 @@ def shop():
     return render_template('shop.html')
 
 
-@app.route('/job', methods=['GET', 'POST'])
+@app.route('/product', methods=['GET', 'POST'])
 def job():
     if request.method == 'POST':
         # do stuff when the form is submitted
@@ -154,7 +154,7 @@ def job():
     if not g.user:
         return redirect(url_for('login'))
     # show the form, it wasn't submitted
-    return render_template('job.html')
+    return render_template('product_register.html')
 
 
 @app.before_request
@@ -166,8 +166,8 @@ def before_request():
         g.user = user
 
 
-@app.route('/job_post', methods=['POST'])
-def job_post():
+@app.route('/product_register', methods=['POST'])
+def product_register():
     # int_features = [int(x) for x in request.form.values()]
 
     email = request.form.get("email")
@@ -216,7 +216,7 @@ def job_post():
         }
     )
 
-    return render_template('job.html', result='Job post done')
+    return render_template('product_register.html', result='Job post done')
 
 
 @app.route('/job_search', methods=['POST'])
