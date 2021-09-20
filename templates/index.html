@@ -24,14 +24,12 @@ tr:nth-child(even) {
 <body>
 <div class="login">
     <h1>Oily Beauty</h1>
-
-    <h2>Index Page</h2>
     <form action="{{ url_for('job_search')}}" method="post">
         <tr>
             <td><a href="{{ url_for('home') }}">Home</a></td>
             <td><a href="{{ url_for('login') }}">Staff Login (soon)</a></td>
-            <td><a href="{{ url_for('job') }}">Product register(soon)</a></td>
-            <td><a href="{{ url_for('service') }}">ProductStock(soon)</a></td>
+            <td><a href="{{ url_for('job_register') }}">Product register(soon)</a></td>
+            <td><a href="{{ url_for('service') }}">Product stock(soon)</a></td>
             <td><a href="{{ url_for('contactUs') }}">Contact Us(soon)</a></td>
         </tr>
         <h4>Ask for create delivery system,stock system for free 60 days contact us: japankosol@gmail.com</h4>
@@ -273,10 +271,10 @@ tr:nth-child(even) {
     </tr>
     <t>
         <td>
-            <h1>
+            <h2>
                 Ask to create Order system,Stock system web application
                 Please contact us : japankosol@gmail.com
-            </h1>
+            </h2>
         </td>
     </t>
 </div>
