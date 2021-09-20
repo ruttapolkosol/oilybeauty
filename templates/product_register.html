@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>OilyBeauty</title>
+
+    <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+<div class="login">
+
+    <h1>OilyBeauty</h1>
+
+    <h2>Product Register</h2>
+    <form action="{{ url_for('product_register')}}" method="post">
+        <tr>
+            <td><a href="{{ url_for('home') }}">Home</a></td>
+            <td><a href="{{ url_for('login') }}">Staff Login</a></td>
+            <td><a href="{{ url_for('product_register') }}">Product Register</a></td>
+        </tr>
+        <table border="1" bgcolor="pink" width="400">
+
+            <tr>
+                <td>
+                    Country:<select name="country" id="country" required="required">
+                    <option value="">Please select</option>
+                    <option value="French">French</option>
+                    <option value="Japan">Japan</option>
+                </select>
+
+                </td>
+
+                <td>
+                    <input type="text" name="brand" placeholder="Brand" required="required" minlength="6"/>
+                </td>
+                <td>
+                    <input type="text" name="productName" placeholder="Product Name" required="required" minlength="5"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Upload Image:<input type="text" name="image" placeholder="Image" minlength="10"/>
+                </td>
+
+                <td>
+                    Quantity:<input type="number" name="amount" placeholder="Amount" required="required" minlength="6"
+                                    value="-"/>
+                </td>
+                <td>
+                    Price:<input type="number" name="price" placeholder="Price" required="required"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    :<select name="">
+                    <option value=""></option>
+                    <option value=""></option>
+                </select>
+                </td>
+                <td>
+                    Expire date:<input type="number" name="expire" placeholder="Expire Date (yyyymmdd)" required="required"
+                                       minlength="6"/>
+                </td>
+                <td>
+                    Ship Out:
+                    <select name="type">
+                        <option value="2">2</option>
+                        <option value="4">4</option>
+                    </select>Days
+            </tr>
+            <br>
+
+            <br>
+
+            <tr>
+                <td colspan="3" width="400">
+                    Detail :<textarea name="textArea" required="required" rows="4" cols="60"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" align="center">
+                    <button type="submit" class="btn btn-primary btn-block btn-large">Product Register</button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" align="center"><font color="purple" size="40"> {{ result }}</font></td>
+            </tr>
+        </table>
+    </form>
+
+    <br>
+    <br>
+    <!--    <h2>Job Search</h2>-->
+    <!--    <form action="{{ url_for('job_search')}}" method="post">-->
+    <!--        <table align="left" border="1" width="400">-->
+    <!--            <tr>-->
+    <!--                <td align="center" width="200">-->
+    <!--                    State:-->
+    <!--                    <select name="stateSearch" id="stateSearch">-->
+    <!--                        <option value="ALL">ALL</option>-->
+    <!--                        <option value="AL">AL</option>-->
+    <!--                        <option value="AK">AK</option>-->
+    <!--                        <option value="AZ">AZ</option>-->
+    <!--                        <option value="AR">AR</option>-->
+    <!--                        <option value="CA">CA</option>-->
+    <!--                        <option value="CO">CO</option>-->
+    <!--                        <option value="CT">CT</option>-->
+    <!--                        <option value="DE">DE</option>-->
+    <!--                        <option value="FL">FL</option>-->
+    <!--                        <option value="GA">GA</option>-->
+    <!--                        <option value="HI">HI</option>-->
+    <!--                        <option value="ID">ID</option>-->
+    <!--                        <option value="IL">IL</option>-->
+    <!--                        <option value="IN">IN</option>-->
+    <!--                        <option value="IA">IA</option>-->
+    <!--                        <option value="KS">KS</option>-->
+    <!--                        <option value="KY">KY</option>-->
+    <!--                        <option value="LA">LA</option>-->
+    <!--                        <option value="ME">ME</option>-->
+    <!--                        <option value="MD">MD</option>-->
+    <!--                        <option value="MA">MA</option>-->
+    <!--                        <option value="MI">MI</option>-->
+    <!--                        <option value="MN">MN</option>-->
+    <!--                        <option value="MS">MS</option>-->
+    <!--                        <option value="MO">MO</option>-->
+    <!--                        <option value="MT">MT</option>-->
+    <!--                        <option value="NE">NE</option>-->
+    <!--                        <option value="NV">NV</option>-->
+    <!--                        <option value="NH">NH</option>-->
+    <!--                        <option value="NJ">NJ</option>-->
+    <!--                        <option value="NM">NM</option>-->
+    <!--                        <option value="NY">NY</option>-->
+    <!--                        <option value="NC">NC</option>-->
+    <!--                        <option value="ND">ND</option>-->
+    <!--                        <option value="OH">OH</option>-->
+    <!--                        <option value="OK">OK</option>-->
+    <!--                        <option value="OR">OR</option>-->
+    <!--                        <option value="PA">PA</option>-->
+    <!--                        <option value="RI">RI</option>-->
+    <!--                        <option value="SC">SC</option>-->
+    <!--                        <option value="SD">SD</option>-->
+    <!--                        <option value="TN">TN</option>-->
+    <!--                        <option value="TX">TX</option>-->
+    <!--                        <option value="UT">UT</option>-->
+    <!--                        <option value="VT">VT</option>-->
+    <!--                        <option value="VA">VA</option>-->
+    <!--                        <option value="WA">WA</option>-->
+    <!--                        <option value="WV">WV</option>-->
+    <!--                        <option value="WI">WI</option>-->
+    <!--                        <option value="WY">WY</option>-->
+    <!--                    </select>-->
+    <!--                </td>-->
+    <!--                <td>-->
+    <!--                    <button type="submit" class="btn btn-primary btn-block btn-large">Job Search</button>-->
+    <!--                </td>-->
+    <!--            </tr>-->
+    <!--        </table>-->
+    <!--    </form>-->
+
+    <!--    <br>-->
+
+    <!--    <br>-->
+
+    <!--    {{ shop_text }}-->
+
+    <!--    <p> Search Result: {{ search_result }}</p>-->
+
+    <!--    <table title="Search" border="1">-->
+    <!--        <tr>-->
+    <!--            <td>Email</td>-->
+    <!--            <td>Phone</td>-->
+    <!--            <td>Contact Person</td>-->
+    <!--            <td>State</td>-->
+    <!--            <td>City</td>-->
+    <!--            <td>Position</td>-->
+    <!--            <td>Type</td>-->
+    <!--            <td>Wage per day</td>-->
+    <!--            <td width="400">Detail</td>-->
+    <!--            <td>Date</td>-->
+    <!--        </tr>-->
+    <!--        {%for contact in job_array%}-->
+    <!--        <tr style="height:40px ">-->
+    <!--            {% set list1 = contact.split(',') %}-->
+    <!--            {% for item in list1 %}-->
+    <!--            <td>{{ item }}</td>-->
+    <!--            {% endfor %}-->
+    <!--        </tr>-->
+    <!--        {% endfor%}-->
+
+    <!--    </table>-->
+    <!--    <tr>-->
+    <!--        <img src="{{url_for('static', filename='job_bar.png')}}" align="middle"/>-->
+    <!--    </tr>-->
+    <!--    <tr>-->
+    <!--        <img src="{{url_for('static', filename='job_pie.png')}}" align="middle"/>-->
+    <!--    </tr>-->
+</div>
+
+</body>
+</html>
