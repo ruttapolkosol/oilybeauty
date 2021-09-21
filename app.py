@@ -99,7 +99,8 @@ def home():
         # print(jobtype)
         # print(wage)
         # print(time)
-        if pathlib.Path().resolve() == '/app':
+        print(type(pathlib.Path().resolve()))
+        if str(pathlib.Path().resolve()) == '/app':
             print('    ////// app' )
             image = "https://oilybeauty.herokuapp.com/static/uploads/ob0001.PNG"
         else:
