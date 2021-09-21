@@ -100,8 +100,10 @@ def home():
         # print(wage)
         # print(time)
         if pathlib.Path().resolve() == '/app':
+            print('    ////// app' )
             image = "https://oilybeauty.herokuapp.com/static/uploads/ob0001.PNG"
         else:
+            print('    ////// not app')
             image = "/static/uploads/ob0001.png"
         #imagepath = "{{ url_for('display_image', filename= "+ "ob0001.png" +") }}"
 
