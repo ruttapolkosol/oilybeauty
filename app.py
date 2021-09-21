@@ -64,35 +64,29 @@ def home():
     today = strftime("%Y%m%d")
     print("today", today)
 
-    ref = db.reference('Job')
+    ref = db.reference('Product')
     # print(' '+stateSearch)
 
-    snapshot = ref.order_by_child("time").equal_to(today).get()
+    #snapshot = ref.order_by_child("time").equal_to(today).get()
+    snapshot = ref.order_by_child("expireDate").limit_to_last(20).get()
     today_array = []
     for user, val in snapshot.items():
         today_list = ""
 
-        email = val.get("email")
-        email = email.strip()
-
-        if email is None:
-            email = "-"
-
-        if email == "":
-            email = "-"
-
-        phone = val.get("phone")
-        contactPerson = val.get("contactPerson")
-        state = val.get("state")
-        city = val.get("city")
-        position = val.get("position")
-        jobtype = val.get("jobtype")
-        wage = val.get("wage")
-        extra = val.get("extra")
+        country = val.get("country")
+        brand = val.get("brand")
+        productName = val.get("productName")
+        fileName = val.get("fileName")
+        quantity = val.get("quantity")
+        amount = val.get("amount")
+        price = val.get("price")
+        expireDate = val.get("expireDate")
+        shipOut = val.get("shipOut")
         textArea = val.get("textArea")
         textArea = textArea.replace(",", "   ")
-
         time = val.get("time")
+
+
         # print(phone)
         # print(state)
         # print(city)
@@ -105,7 +99,7 @@ def home():
 
         #imagepath = "{{ url_for('display_image', filename= "+ "ob0001.png" +") }}"
 
-        today_list = today_list + image+ ",00001PK," + email + "," + phone + "," + contactPerson + " ," + state + "," + city + " , " + position + "," + jobtype + "," + wage + " confirm again, " + textArea + "," + time
+        today_list = today_list + image+ ",00001PK," + country + "," + brand + "," + productName +  "," + quantity + " , " + price + "," + expireDate + "," + shipOut + " days , " + textArea +","+time
         today_array.append(today_list)
 
     return render_template('index.html',today=today_array)
@@ -191,7 +185,12 @@ def product():
     if not g.user:
         return redirect(url_for('login'))
     # show the form, it wasn't submitted
-    return render_template('product_register.html')
+    import datetime, timedelta
+    today = datetime.date.today()
+    expireDate = today + datetime.timedelta(days=365)
+    expireDate = expireDate.strftime("%Y%m%d")
+
+    return render_template('product_register.html',expireDate = expireDate)
 
 @app.route('/product11/<string:id>', methods=['GET', 'POST'])
 def product11(id):
@@ -214,17 +213,33 @@ def before_request():
 @app.route('/product_register', methods=['POST'])
 def product_register():
     # int_features = [int(x) for x in request.form.values()]
+    import os
 
-    email = request.form.get("email")
-    phone = request.form.get("phone")
-    contactPerson = request.form.get("contactPerson")
-    state = request.form.get("statePost")
-    city = request.form.get("city")
-    area = request.form.get("area")
-    position = request.form.get("position")
-    jobtype = request.form.get("jobtype")
-    wage = request.form.get("wage")
-    extra = request.form.get("extra")
+    if 'file' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+    file = request.files['file']
+    if file.filename == '':
+        flash('No image selected for uploading')
+        return redirect(request.url)
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        # print('upload_image filename: ' + filename)
+        flash('Image successfully uploaded and displayed below')
+    #    return render_template('product_register.html', filename=filename)
+    else:
+        flash('Allowed image types are - png, jpg, jpeg, gif')
+        return redirect(request.url)
+
+    country = request.form.get("country")
+    brand = request.form.get("brand")
+    productName = request.form.get("productName")
+
+    quantity = request.form.get("quantity")
+    price = request.form.get("price")
+    expireDate = request.form.get("expireDate")
+    shipOut= request.form.get("shipOut")
     textArea = request.form.get("textArea")
 
     if 'user_id' in session:
@@ -243,25 +258,23 @@ def product_register():
     nowtime = strftime("%Y%m%d")
     print("time", nowtime)
 
-    ref = db.reference('Job')
+    ref = db.reference('Product')
     ref.push(
         {
-            'email': email,
-            'phone': phone,
-            'contactPerson': contactPerson,
-            'state': state,
-            'city': city,
-            'area': area,
-            'position': position,
-            'jobtype': jobtype,
-            'wage': wage,
-            'extra': extra,
+            'country': country,
+            'brand': brand,
+            'productName': productName,
+            'fileName': filename,
+            'quantity': quantity,
+            'price': price,
+            'expireDate': expireDate,
+            'shipOut': shipOut,
             'textArea': textArea,
             'time': nowtime
         }
     )
 
-    return render_template('product_register.html', result='Job post done')
+    return render_template('product_register.html', result='Register done')
 
 
 @app.route('/job_search', methods=['POST'])

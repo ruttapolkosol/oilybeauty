@@ -18,7 +18,7 @@
 
     <h2>Product Register</h2>
 
-    <form method="post" action="/upload_image" enctype="multipart/form-data">
+    <form method="post" action="/product_register" enctype="multipart/form-data">
         <tr>
             <td><a href="{{ url_for('home') }}">Home</a></td>
             <td><a href="{{ url_for('login') }}">Staff Login</a></td>
@@ -59,11 +59,11 @@
                 </td>
 
                 <td>
-                    Quantity:<input type="number" name="amount" placeholder="Amount" required="required" minlength="6"
-                                    value="-"/>
+                    Quantity:<input type="number" name="quantity" placeholder="Quantity" required="required" minlength="1"
+                                    value="1"/>
                 </td>
                 <td>
-                    Price:<input type="number" name="price" placeholder="Price" required="required"/>
+                    Price:<input type="number" name="price" placeholder="Price" required="required" value="1"/>
                 </td>
             </tr>
             <tr>
@@ -74,13 +74,12 @@
                 </select>
                 </td>
                 <td>
-                    Expire date:<input type="number" name="expire" placeholder="Expire Date (yyyymmdd)"
-                                       required="required"
-                                       minlength="6"/>
+                    Expire date:<input type="number" name="expireDate" placeholder="Expire Date (yyyymmdd)"
+                                       required="required" value={{ expireDate }}    minlength="6"/>
                 </td>
                 <td>
                     Ship Out:
-                    <select name="type">
+                    <select name="shipOut">
                         <option value="2">2</option>
                         <option value="4">4</option>
                     </select>Days
