@@ -8,3 +8,4 @@ scipy>=0.15.1
 firebase-admin==5.0.2
 snapshot == 0.1.1
 matplotlib==3.4.3
+timedelta
