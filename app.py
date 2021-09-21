@@ -43,6 +43,7 @@ def home():
     import os
     #print(os.path.realpath)
     import pathlib
+    print(pathlib.Path(__file__).parent.resolve())
     print(pathlib.Path().resolve())
 
     if os.path.isfile(app.static_folder + "/shop_bar.png"):
