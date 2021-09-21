@@ -41,6 +41,10 @@ users.append(User(id=3, username='', password=''))
 @app.route('/')
 def home():
     import os
+    #print(os.path.realpath)
+    import pathlib
+    print(pathlib.Path().resolve())
+
     if os.path.isfile(app.static_folder + "/shop_bar.png"):
         print('in if')
         os.remove(app.static_folder + "/shop_bar.png")
