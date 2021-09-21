@@ -17,7 +17,8 @@
     <h1>OilyBeauty</h1>
 
     <h2>Product Register</h2>
-    <form action="{{ url_for('product_register')}}" method="post">
+
+    <form method="post" action="/upload_image" enctype="multipart/form-data">
         <tr>
             <td><a href="{{ url_for('home') }}">Home</a></td>
             <td><a href="{{ url_for('login') }}">Staff Login</a></td>
@@ -42,9 +43,19 @@
                     <input type="text" name="productName" placeholder="Product Name" required="required" minlength="5"/>
                 </td>
             </tr>
+            {% if filename %}
+            <div>
+                <img src="{{ url_for('display_image', filename=filename) }}" width="200" >
+            </div>
+            {% endif %}
             <tr>
                 <td>
-                    Upload Image:<input type="text" name="image" placeholder="Image" minlength="10"/>
+                    Upload Image:
+                    <dl>
+                        <p>
+                            <input type="file" name="file" class="form-control" autocomplete="off" required="required">
+                        </p>
+                    </dl>
                 </td>
 
                 <td>
@@ -63,7 +74,8 @@
                 </select>
                 </td>
                 <td>
-                    Expire date:<input type="number" name="expire" placeholder="Expire Date (yyyymmdd)" required="required"
+                    Expire date:<input type="number" name="expire" placeholder="Expire Date (yyyymmdd)"
+                                       required="required"
                                        minlength="6"/>
                 </td>
                 <td>
@@ -84,7 +96,9 @@
             </tr>
             <tr>
                 <td colspan="3" align="center">
-                    <button type="submit" class="btn btn-primary btn-block btn-large">Product Register</button>
+                    <p>
+                        <input type="submit" value="Product Register" class="btn btn-info">
+                    </p>
                 </td>
             </tr>
             <tr>

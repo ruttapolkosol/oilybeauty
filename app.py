@@ -1,9 +1,9 @@
 from shlex import shlex
 from time import strftime
 from time import strftime
-
+from werkzeug.utils import secure_filename
 import snapshot as snapshot
-from flask import Flask, g, redirect, request, jsonify, render_template, session, url_for
+from flask import Flask,flash, g, redirect, request, jsonify, render_template, session, url_for
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
@@ -18,14 +18,24 @@ class User:
     def __repr__(self):
         return f'<User: {self.username}>'
 
+UPLOAD_FOLDER = 'static/uploads/'
+app = Flask(__name__)
+app.secret_key = 'somesecretkeythatonlyishouldknow'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 users = []
 users.append(User(id=1, username='march', password='310090'))
 users.append(User(id=2, username='', password=''))
 users.append(User(id=3, username='', password=''))
 
-app = Flask(__name__)
-app.secret_key = 'somesecretkeythatonlyishouldknow'
+
 
 
 @app.route('/')
@@ -91,11 +101,42 @@ def home():
         # print(wage)
         # print(time)
 
-        today_list = today_list + email + "," + phone + "," + contactPerson + " ," + state + "," + city + " , " + position + "," + jobtype + "," + wage + " confirm again, " + textArea + "," + time
+        image = "/static/uploads/ob0001.png"
+
+        #imagepath = "{{ url_for('display_image', filename= "+ "ob0001.png" +") }}"
+
+        today_list = today_list + image+ ",00001PK," + email + "," + phone + "," + contactPerson + " ," + state + "," + city + " , " + position + "," + jobtype + "," + wage + " confirm again, " + textArea + "," + time
         today_array.append(today_list)
 
     return render_template('index.html',today=today_array)
 
+
+@app.route('/upload_image', methods=['POST'])
+def upload_image():
+    import os
+
+    if 'file' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+    file = request.files['file']
+    if file.filename == '':
+        flash('No image selected for uploading')
+        return redirect(request.url)
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        # print('upload_image filename: ' + filename)
+        flash('Image successfully uploaded and displayed below')
+        return render_template('product_register.html', filename=filename)
+    else:
+        flash('Allowed image types are - png, jpg, jpeg, gif')
+        return redirect(request.url)
+
+
+@app.route('/display/<filename>')
+def display_image(filename):
+    # print('display_image filename: ' + filename)
+    return redirect(url_for('static', filename='uploads/' + filename), code=301)
 @app.route('/service', methods=['GET'])
 def service():
     return render_template('index.html')
@@ -122,12 +163,13 @@ def login():
     return render_template('login.html')
 
 
-@app.route('/staff')
-def staff():
-    if not g.user:
-        return redirect(url_for('login'))
-
-    return render_template('staff.html')
+# @app.route('/edit/<string:pkid>' ,methods = ['GET','POST'])
+# def edit(pkid: str):
+#     # if not g.user:
+#     #     return redirect(url_for('login'))
+#     print(pkid)
+#
+#     return render_template('index.html')
 
 
 @app.route('/sell', methods=['GET'])
@@ -151,6 +193,14 @@ def product():
     # show the form, it wasn't submitted
     return render_template('product_register.html')
 
+@app.route('/product11/<string:id>', methods=['GET', 'POST'])
+def product11(id):
+
+    # if not g.user:
+    #     return redirect(url_for('login'))
+    # show the form, it wasn't submitted
+    print(id)
+    return render_template('product_register.html')
 
 @app.before_request
 def before_request():

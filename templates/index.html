@@ -8,7 +8,6 @@ tr:nth-child(even) {
 
 </style>
 <head>
-
     Visitor:<a class="hitCounter" target="_blank" title="Hit counter"
                data-name="9ccac8285a600ed018beb76b4c2162f8|5|page|1|#ea5050|#ffffff|small|s-hit">Hit Counter</a>
 
@@ -39,23 +38,34 @@ tr:nth-child(even) {
 
         <table border="1">
             <tr>
-                <td>Email</td>
-                <td>Phone</td>
-                <td>Contact Person</td>
-                <td>State</td>
-                <td>City</td>
-                <td>Position</td>
-                <td>Job Type</td>
-                <td>Wage per hr/day(ask again)</td>
+                <td>Image</td>
+                <td>PK</td>
+                <td>County</td>
+                <td>Brand</td>
+                <td>Product Name</td>
+                <td></td>
+                <td>Quality</td>
+                <td>Price</td>
+                <td>a</td>
+                <td>b</td>
                 <td width="600">Detail</td>
-                <td>Date</td>
+                <td>Expire Date</td>
             </tr>
             {%for contact in today%}
             <tr style="height:40px">
                 {% set list1 = contact.split(',') %}
-                {% for item in list1 %}
-                <td>{{ item }}</td>
-                {% endfor %}
+                    {% if list1[0] %}
+                        <td>   <img src= {{ list1[0] }} alt="User Image" width="200"></td>
+                    {% endif %}
+                    {% if list1[1] %}
+                        <td>
+                            <a href= "{{ url_for('product11',id = list1[1])}}">{{ list1[1] }} Edit</a>
+                        </td>
+                    {%  endif %}
+
+                    {% for item in list1[2:14] %}
+                        <td>{{ item }}</td>
+                    {% endfor %}
             </tr>
             {% endfor%}
         </table>
@@ -164,8 +174,6 @@ tr:nth-child(even) {
             <img src="{{url_for('static', filename='job_pie.png')}}" align="middle"/>
         </tr>
     </form>
-
-
 </div>
 
 </body>
