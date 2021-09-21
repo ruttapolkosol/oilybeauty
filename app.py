@@ -130,8 +130,8 @@ def staff():
     return render_template('staff.html')
 
 
-@app.route('/shop', methods=['GET', 'POST'])
-def shop():
+@app.route('/sell', methods=['GET'])
+def sell():
     # if request.method == 'POST':
     #     # do stuff when the form is submitted
     #
@@ -140,17 +140,12 @@ def shop():
     #     return redirect(url_for('index'))
 
     # show the form, it wasn't submitted
-    return render_template('shop.html')
+    return render_template('sell.html')
 
 
 @app.route('/product', methods=['GET', 'POST'])
-def job():
-    if request.method == 'POST':
-        # do stuff when the form is submitted
+def product():
 
-        # redirect to end the POST handling
-        # the redirect can be to the same route or somewhere else
-        return redirect(url_for('job'))
     if not g.user:
         return redirect(url_for('login'))
     # show the form, it wasn't submitted
@@ -416,8 +411,8 @@ def shop_post():
     return render_template('shop.html', result=' Shop post done')
 
 
-@app.route('/shop_search', methods=['POST'])
-def shop_search():
+@app.route('/sell_search', methods=['POST'])
+def sell_search():
     # int_features = [int(x) for x in request.form.values()]
     # final_features = [np.array(int_features)]
     # prediction = model.predict(final_features)
@@ -566,7 +561,7 @@ def shop_search():
     plt.savefig('static/shop_pie' + '.png')
     plt.close()
 
-    return render_template('index.html', search_result=result, shop_array=shop_array)
+    return render_template('sell.html', search_result=result, shop_array=shop_array)
 
 
 @app.after_request
