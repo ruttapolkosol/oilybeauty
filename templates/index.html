@@ -30,6 +30,7 @@ tr:nth-child(even) {
             <td><a href="{{ url_for('login') }}">Staff Login (soon)</a></td>
             <td><a href="{{ url_for('product') }}">Product register(soon)</a></td>
             <td><a href="{{ url_for('stock') }}">Product stock(soon)</a></td>
+            <td><a href="{{ url_for('sell_search') }}">Sell in month(soon)</a></td>
             <td><a href="{{ url_for('contactUs') }}">Contact Us(soon)</a></td>
         </tr>
         <h4>Ask for create delivery system,stock system for free 60 days contact us: japankosol@gmail.com</h4>
@@ -164,119 +165,7 @@ tr:nth-child(even) {
         </tr>
     </form>
 
-    <br>
-    <br>
-    <h2>Shop Search</h2>
-    <form action="{{ url_for('shop_search')}}" method="post">
-        <table align="left" border="1" width="400" bgcolor="#eedde7">
-            <tr>
-                <td align="center" width="200">
-                    State:
-                    <select name="stateSearch" id="stateSearch">
-                        <option value="ALL">ALL</option>
-                        <option value="AL">AL</option>
-                        <option value="AK">AK</option>
-                        <option value="AZ">AZ</option>
-                        <option value="AR">AR</option>
-                        <option value="CA">CA</option>
-                        <option value="CO">CO</option>
-                        <option value="CT">CT</option>
-                        <option value="DE">DE</option>
-                        <option value="FL">FL</option>
-                        <option value="GA">GA</option>
-                        <option value="HI">HI</option>
-                        <option value="ID">ID</option>
-                        <option value="IL">IL</option>
-                        <option value="IN">IN</option>
-                        <option value="IA">IA</option>
-                        <option value="KS">KS</option>
-                        <option value="KY">KY</option>
-                        <option value="LA">LA</option>
-                        <option value="ME">ME</option>
-                        <option value="MD">MD</option>
-                        <option value="MA">MA</option>
-                        <option value="MI">MI</option>
-                        <option value="MN">MN</option>
-                        <option value="MS">MS</option>
-                        <option value="MO">MO</option>
-                        <option value="MT">MT</option>
-                        <option value="NE">NE</option>
-                        <option value="NV">NV</option>
-                        <option value="NH">NH</option>
-                        <option value="NJ">NJ</option>
-                        <option value="NM">NM</option>
-                        <option value="NY">NY</option>
-                        <option value="NC">NC</option>
-                        <option value="ND">ND</option>
-                        <option value="OH">OH</option>
-                        <option value="OK">OK</option>
-                        <option value="OR">OR</option>
-                        <option value="PA">PA</option>
-                        <option value="RI">RI</option>
-                        <option value="SC">SC</option>
-                        <option value="SD">SD</option>
-                        <option value="TN">TN</option>
-                        <option value="TX">TX</option>
-                        <option value="UT">UT</option>
-                        <option value="VT">VT</option>
-                        <option value="VA">VA</option>
-                        <option value="WA">WA</option>
-                        <option value="WV">WV</option>
-                        <option value="WI">WI</option>
-                        <option value="WY">WY</option>
-                    </select>
-                </td>
-                <td>
-                    <button type="submit" class="btn btn-primary btn-block btn-large">Shop Search</button>
-                </td>
-            </tr>
-        </table>
-    </form>
 
-    <br>
-
-    <br>
-
-    {{ shop_text }}
-
-    <p> Search Result: {{ search_result }}</p>
-
-    <table title="Search" border="1">
-        <tr>
-            <td>Email</td>
-            <td>Phone</td>
-            <td>Contact Person</td>
-            <td>State</td>
-            <td>City</td>
-            <td>Area</td>
-            <td>Price</td>
-            <td width="400">Detail</td>
-            <td>Date</td>
-        </tr>
-        {%for contact in shop_array%}
-        <tr style="height:40px ">
-            {% set list1 = contact.split(',') %}
-            {% for item in list1 %}
-            <td>{{ item }}</td>
-            {% endfor %}
-        </tr>
-        {% endfor%}
-
-    </table>
-    <tr>
-        <img src="{{url_for('static', filename='shop_bar.png')}}" align="middle"/>
-    </tr>
-    <tr>
-        <img src="{{url_for('static', filename='shop_pie.png')}}" align="middle"/>
-    </tr>
-    <t>
-        <td>
-            <h2>
-                Ask to create Order system,Stock system web application
-                Please contact us : japankosol@gmail.com
-            </h2>
-        </td>
-    </t>
 </div>
 
 </body>

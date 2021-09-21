@@ -369,8 +369,8 @@ def job_search():
     return render_template('index.html', search_result=result, job_array=job_array)
 
 
-@app.route('/shop_post', methods=['POST'])
-def shop_post():
+@app.route('/stock', methods=['POST'])
+def stock():
     # int_features = [int(x) for x in request.form.values()]
 
     email = request.form.get("email")
