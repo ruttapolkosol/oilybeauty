@@ -99,9 +99,10 @@ def home():
         # print(jobtype)
         # print(wage)
         # print(time)
-
-        image = "/static/uploads/ob0001.png"
-
+        if pathlib.Path().resolve() == '/app':
+            image = "https://oilybeauty.herokuapp.com/static/uploads/ob0001.PNG"
+        else:
+            image = "/static/uploads/ob0001.png"
         #imagepath = "{{ url_for('display_image', filename= "+ "ob0001.png" +") }}"
 
         today_list = today_list + image+ ",00001PK," + country + "," + brand + "," + productName +  "," + quantity + " , " + price + "," + expireDate + "," + shipOut + " days , " + textArea +","+time
