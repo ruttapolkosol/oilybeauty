@@ -115,7 +115,7 @@ def login():
         user = [x for x in users if x.username == username][0]
         if user and user.password == password:
             session['user_id'] = user.id
-            return redirect(url_for('job'))
+            return redirect(url_for('product_register'))
 
         return redirect(url_for('login'))
 
