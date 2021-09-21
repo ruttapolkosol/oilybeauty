@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>ShopJobRoom</title>
+
+    <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+<div class="login">
+    <p><a href="http://127.0.0.1:5000/">Staff</a></p>
+
+    <p><a href="{{ url_for('home') }}">ShopJobRoom</a></p>
+
+    <p><a href="{{ url_for('product') }}">Product</a></p>
+    <h1>Sell in month</h1>
+
+
+    <form action="{{ url_for('sell_search')}}" method="post">
+        <table border="1" bgcolor="pink" width="400">
+
+            <tr>
+                <input type="text" name="type" placeholder="type" hidden="true" value="shop"/>
+                <td>
+                    <input type="text" name="email" placeholder="Email" minlength="10"/>
+                </td>
+
+                <td><input type="text" name="phone" placeholder="Phone" required="required" minlength="10"/>
+                </td>
+                <td>
+                    <input type="text" name="contactPerson" placeholder="Contact Person" required="required"
+                           minlength="2"/>
+                </td>
+            </tr>
+            <tr>
+
+                <td>
+                    Year:<select name="year" id="year">
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                </select>
+                </td>
+
+                <td>
+                    City:<input type="text" name="city" placeholder="City" required="required" minlength="6" value="-"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Area:<input type="number" name="area" placeholder="Area" required="required" minlength="2"
+                                value="100" size="6"/>
+                </td>
+                <td>
+                    Price:<input type="number" name="price" placeholder="Price" required="required" minlength="4"
+                                 value="2000"/>
+                </td>
+
+            </tr>
+            <br>
+
+            <br>
+
+            <tr>
+                <td colspan="3" width="400">
+                    Detail :<textarea name="textArea" required="required" rows="4" cols="60"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" align="center">
+                    <button type="submit" class="btn btn-primary btn-block btn-large">Shop Post</button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" align="center"><font color="purple" size="40"> {{ result }}</font></td>
+            </tr>
+        </table>
+    </form>
+
+
+    <br>
+    <br>
+    <h2>Shop Search</h2>
+    <form action="{{ url_for('shop_search')}}" method="post">
+        <table align="left" border="1" width="400">
+            <tr>
+                <td align="center" width="200">
+                    State:
+                    <select name="stateSearch" id="stateSearch">
+                        <option value="ALL">ALL</option>
+                        <option value="AL">AL</option>
+                        <option value="AK">AK</option>
+                        <option value="AZ">AZ</option>
+                        <option value="AR">AR</option>
+                        <option value="CA">CA</option>
+                        <option value="CO">CO</option>
+                        <option value="CT">CT</option>
+                        <option value="DE">DE</option>
+                        <option value="FL">FL</option>
+                        <option value="GA">GA</option>
+                        <option value="HI">HI</option>
+                        <option value="ID">ID</option>
+                        <option value="IL">IL</option>
+                        <option value="IN">IN</option>
+                        <option value="IA">IA</option>
+                        <option value="KS">KS</option>
+                        <option value="KY">KY</option>
+                        <option value="LA">LA</option>
+                        <option value="ME">ME</option>
+                        <option value="MD">MD</option>
+                        <option value="MA">MA</option>
+                        <option value="MI">MI</option>
+                        <option value="MN">MN</option>
+                        <option value="MS">MS</option>
+                        <option value="MO">MO</option>
+                        <option value="MT">MT</option>
+                        <option value="NE">NE</option>
+                        <option value="NV">NV</option>
+                        <option value="NH">NH</option>
+                        <option value="NJ">NJ</option>
+                        <option value="NM">NM</option>
+                        <option value="NY">NY</option>
+                        <option value="NC">NC</option>
+                        <option value="ND">ND</option>
+                        <option value="OH">OH</option>
+                        <option value="OK">OK</option>
+                        <option value="OR">OR</option>
+                        <option value="PA">PA</option>
+                        <option value="RI">RI</option>
+                        <option value="SC">SC</option>
+                        <option value="SD">SD</option>
+                        <option value="TN">TN</option>
+                        <option value="TX">TX</option>
+                        <option value="UT">UT</option>
+                        <option value="VT">VT</option>
+                        <option value="VA">VA</option>
+                        <option value="WA">WA</option>
+                        <option value="WV">WV</option>
+                        <option value="WI">WI</option>
+                        <option value="WY">WY</option>
+                    </select>
+                </td>
+                <td>
+                    <button type="submit" class="btn btn-primary btn-block btn-large">Shop Search</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <br>
+
+    <br>
+
+    {{ shop_text }}
+
+    <p> Search Result: {{ search_result }}</p>
+    <!--        <ul>-->
+    <!--            {% for contact in shop_array %}-->
+    <!--            <li>{{ contact }}</li>-->
+    <!--            {% endfor %}-->
+    <!--        </ul>-->
+
+    <table title="Search" border="1">
+        <tr>
+            <td>Email</td>
+            <td>Phone</td>
+            <td>Contact Person</td>
+            <td>State</td>
+            <td>City</td>
+            <td>Area</td>
+            <td>Price</td>
+            <td width="400">Detail</td>
+            <td>Date</td>
+        </tr>
+        {%for contact in shop_array%}
+        <tr style="height:40px ">
+            {% set list1 = contact.split(',') %}
+            {% for item in list1 %}
+            <td>{{ item }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor%}
+
+    </table>
+    <tr>
+        <img src="{{url_for('static', filename='shop_bar.png')}}" align="middle"/>
+    </tr>
+     <tr>
+        <img src="{{url_for('static', filename='shop_pie.png')}}" align="middle"/>
+    </tr>
+</div>
+
+</body>
+</html>
