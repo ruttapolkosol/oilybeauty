@@ -38,30 +38,37 @@ tr:nth-child(even) {
         <table border="1">
             <tr>
                 <td>Image</td>
-                <td>PK</td>
+                <td>Image</td>
+                <td>Detail</td>
                 <td>County</td>
                 <td>Brand</td>
                 <td>Product Name</td>
-                <td>Quality</td>
-                <td>Price</td>
+                <td width="600">Description</td>
+                <td>In stock</td>
+                <td>Price per each</td>
                 <td>Expire Date</td>
-                <td>Ship Out</td>
-                <td width="600">Detail</td>
                 <td>Update Date</td>
             </tr>
             {%for contact in today%}
             <tr style="height:40px">
                 {% set list1 = contact.split(',') %}
                 {% if list1[0] %}
-                <td><img src={{ list1[0] }} alt="User Image" width="200"></td>
+                    <td>
+                        <img src={{ list1[0] }} alt="User Image" width="200">
+                    </td>
                 {% endif %}
                 {% if list1[1] %}
+                    <td>
+                        <img src={{ list1[1] }} alt="User Image" width="200">
+                    </td>
+                {% endif %}
+                {% if list1[2] %}
                 <td>
-                    <a href="{{ url_for('product11',id = list1[1])}}">{{ list1[1] }} Edit</a>
+                    <a href="{{ url_for('edit',id = list1[2])}}">{{ list1[2] }} Detail</a>
                 </td>
                 {% endif %}
 
-                {% for item in list1[2:14] %}
+                {% for item in list1[3:14] %}
                 <td>{{ item }}</td>
                 {% endfor %}
             </tr>

@@ -77,18 +77,20 @@ def home():
     today_array = []
     for user, val in snapshot.items():
         today_list = ""
-
+        fileName = val.get("fileName")
+        fileName1 = val.get("fileName")
         country = val.get("country")
         brand = val.get("brand")
         productName = val.get("productName")
+        textArea = val.get("textArea")
+        textArea = textArea.replace(",", "   ")
         fileName = val.get("fileName")
         quantity = val.get("quantity")
         amount = val.get("amount")
         price = val.get("price")
         expireDate = val.get("expireDate")
-        shipOut = val.get("shipOut")
-        textArea = val.get("textArea")
-        textArea = textArea.replace(",", "   ")
+
+
         time = val.get("time")
 
 
@@ -108,7 +110,7 @@ def home():
             image = "/static/uploads/ob0001.png"
         #imagepath = "{{ url_for('display_image', filename= "+ "ob0001.png" +") }}"
 
-        today_list = today_list + image+ ",00001PK," + country + "," + brand + "," + productName +  "," + quantity + " , " + price + "," + expireDate + "," + shipOut + " days , " + textArea +","+time
+        today_list = today_list + image+ ","+ image+ ", 00001PK ," + country + "," + brand + "," + productName +" , "+textArea +  "," + quantity + " , " + price + "," + expireDate + ","  +time
         today_array.append(today_list)
 
     return render_template('index.html',today=today_array)
@@ -201,8 +203,8 @@ def product():
 
     return render_template('product_register.html',expireDate = expireDate)
 
-@app.route('/product11/<string:id>', methods=['GET', 'POST'])
-def product11(id):
+@app.route('/edit/<string:id>', methods=['GET', 'POST'])
+def edit(id):
 
     # if not g.user:
     #     return redirect(url_for('login'))
@@ -264,7 +266,7 @@ def product_register():
     import datetime
     nowtime = datetime.datetime.now()
 
-    nowtime = strftime("%Y%m%d")
+    nowtime = strftime("%Y-%m-%d")
     print("time", nowtime)
 
     ref = db.reference('Product')
