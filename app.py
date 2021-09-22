@@ -77,6 +77,7 @@ def home():
     today_array = []
     for user, val in snapshot.items():
         today_list = ""
+        pk = val.get("pk")
         fileName = val.get("fileName")
         fileName1 = val.get("fileName")
         country = val.get("country")
@@ -110,7 +111,7 @@ def home():
             image = "/static/uploads/ob0001.png"
         #imagepath = "{{ url_for('display_image', filename= "+ "ob0001.png" +") }}"
 
-        today_list = today_list + image+ ","+ image+ ", 00001PK ," + country + "," + brand + "," + productName +" , "+textArea +  "," + quantity + " , " + price + "," + expireDate + ","  +time
+        today_list = today_list + image+ ","+ image+ ", "+ pk +" ," + country + "," + brand + "," + productName +" , " +textArea +  "," + quantity + " , " + price + "," + expireDate + ","+time
         today_array.append(today_list)
 
     return render_template('index.html',today=today_array)
@@ -210,7 +211,45 @@ def detail(id):
     #     return redirect(url_for('login'))
     # show the form, it wasn't submitted
     print(id)
-    return render_template('product_detail.html')
+    print(len(id))
+    print(id.strip())
+    print(len(id))
+    id = id.strip();
+    if not firebase_admin._apps:
+        cred = credentials.Certificate('firebase-sdk.json')
+        firebase_admin.initialize_app(cred,
+                                      {'databaseURL': 'https://microbittempreader-16e2d-default-rtdb.firebaseio.com/'
+                                       })
+
+    ref = db.reference('Product')
+
+    #snapshot = ref.order_by_key().get()
+    snapshot = ref.order_by_child("pk").equal_to(id).get()
+    for user, val in snapshot.items():
+        country = val.get("country")
+        brand = val.get("brand")
+        productName = val.get("productName")
+        textArea = val.get("textArea")
+        textArea = textArea.replace(",", "   ")
+        img = val.get("fileName")
+        img1 = val.get("fileName1")
+        img2 = val.get("fileName2")
+        img3 = val.get("fileName3")
+        img4 = val.get("fileName4")
+        quanlity = val.get("quanlity")
+        price = val.get("price")
+        expireDate = val.get("expireDate")
+        time = val.get("time")
+
+        # print(phone)
+        # print(state)
+        # print(city)
+        # print(position)
+        # print(jobtype)
+        # print(wage)
+        # print(time)
+
+    return render_template('product_detail.html' , country=country,brand = brand,productName = productName,img = img,img1= img1)
 
 @app.route('/edit/<string:id>', methods=['GET', 'POST'])
 def edit(id):
@@ -269,8 +308,7 @@ def product_register():
 
     if not firebase_admin._apps:
         cred = credentials.Certificate('firebase-sdk.json')
-        firebase_admin.initialize_app(cred, {
-            'databaseURL': 'https://microbittempreader-16e2d-default-rtdb.firebaseio.com/'
+        firebase_admin.initialize_app(cred, {'databaseURL': 'https://microbittempreader-16e2d-default-rtdb.firebaseio.com/'
         })
     import datetime
     nowtime = datetime.datetime.now()
@@ -281,6 +319,7 @@ def product_register():
     ref = db.reference('Product')
     ref.push(
         {
+            'pk' : brand+productName,
             'country': country,
             'brand': brand,
             'productName': productName,
@@ -306,8 +345,7 @@ def job_search():
 
     if not firebase_admin._apps:
         cred = credentials.Certificate('firebase-sdk.json')
-        firebase_admin.initialize_app(cred, {
-            'databaseURL': 'https://microbittempreader-16e2d-default-rtdb.firebaseio.com/'
+        firebase_admin.initialize_app(cred, { 'databaseURL': 'https://microbittempreader-16e2d-default-rtdb.firebaseio.com/'
         })
 
     stateSearch = request.form.get("stateSearch")

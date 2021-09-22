@@ -28,63 +28,65 @@
 
             <tr>
                 <td>
-                    Country:<select name="country" id="country" required="required">
-                    <option value="">Please select</option>
-                    <option value="French">French</option>
-                    <option value="Japan">Japan</option>
-                </select>
-
+                    Country:<input type="text" name="country" value="{{ country }}">
                 </td>
 
                 <td>
-                    <input type="text" name="brand"/>
+                    Brand:<input type="text" name="brand" value="{{ brand }}"/>
                 </td>
                 <td>
-                    <input type="text" name="productName"/>
+                    Product Name:<input type="text" name="productName" value=" {{ productName }}"/>
                 </td>
             </tr>
             {% if filename %}
             <div>
-                <img src="{{ url_for('display_image', filename=filename) }}" width="200">
+                <img src="{{ url_for('display_image', filename= img) }}" width="200">
             </div>
             {% endif %}
             <tr>
                 <td>
+                    Image:
+                    <dl>
+                        <a href="{{ url_for('display_image', filename= img) }}" ><img src="https://oilybeauty.herokuapp.com/static/uploads/ob0001.PNG" width="150"></a>
+                    </dl>
+                </td>
+                <td>
                     Image1:
                     <dl>
-                        <a href="https://oilybeauty.herokuapp.com/static/uploads/ob0001.PNG" ><img src="https://oilybeauty.herokuapp.com/static/uploads/ob0001.PNG" width="150"></a>
+                        {% if img1 %}
+                        <img src="{{ url_for('display_image', filename= img1) }}" width="150">
+                        {% endif %}
                     </dl>
                 </td>
                 <td>
                     Image2:
-                    <dl>
-                        <img src="{{ url_for('display_image', filename= 'ob0001.PNG') }}" width="150">
+                    <dl> {% if img2 %}
+                            <img src="{{ url_for('display_image', filename= img2) }}" width="150">
+                        {% endif %}
                     </dl>
                 </td>
+            </tr>
+            <tr>
                 <td>
                     Image3:
                     <dl>
-                            <img src="https://oilybeauty.herokuapp.com/static/uploads/ob0001.PNG" width="150">
+                         {% if img3 %}
+                            <img src="{{ url_for('display_image', filename= img3) }}" width="150">
+                        {% endif %}
                     </dl>
                 </td>
-            </tr>
-            <tr>
                 <td>
                     Image4:
                     <dl>
-                            <img src="https://oilybeauty.herokuapp.com/static/uploads/ob0001.PNG" width="150">
-                    </dl>
-                </td>
-                <td>
-                    Image5:
-                    <dl>
-                            <img src="https://oilybeauty.herokuapp.com/static/uploads/ob0001.PNG" width="150">
+                         {% if img4 %}
+                            <img src="{{ url_for('display_image', filename= img4) }}" width="150">
+                        {% endif %}
                     </dl>
                 </td>
             </tr>
             <tr>
                 <td>
-                    Quantity:<input type="number" name="quantity" value={{ quantity }}/>
+                    In Stock:<input type="number" name="quantity" value={{ quantity }}/>
                 </td>
                 <td>
                     Price:<input type="number" name="price" value={{ price }}/>
@@ -96,16 +98,6 @@
             </tr>
 
 
-            <tr>
-                <td>
-
-
-                </td>
-                <td>
-
-                </td>
-
-            </tr>
             <br>
 
             <br>
@@ -116,6 +108,22 @@
                 </td>
             </tr>
 
+            <br>
+
+            <br>
+
+
+            <tr>
+                <td>
+                    Sell:<input type="number" name="sellQuanlity" />
+                </td>
+                <td>
+                   Sell price:<input type="number" name="sellPrice" />
+                </td>
+                <td>
+                   Sell total:<input type="number" name="sellPrice" />
+                </td>
+            </tr>
         </table>
     </form>
 
