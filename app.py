@@ -203,6 +203,15 @@ def product():
 
     return render_template('product_register.html',expireDate = expireDate)
 
+@app.route('/detail/<string:id>', methods=['GET', 'POST'])
+def detail(id):
+
+    # if not g.user:
+    #     return redirect(url_for('login'))
+    # show the form, it wasn't submitted
+    print(id)
+    return render_template('product_detail.html')
+
 @app.route('/edit/<string:id>', methods=['GET', 'POST'])
 def edit(id):
 

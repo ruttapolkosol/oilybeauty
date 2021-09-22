@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>OilyBeauty</title>
+
+    <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+<div class="login">
+
+    <h1>OilyBeauty</h1>
+
+    <h2>Product Detail</h2>
+
+    <form method="post" action="/" enctype="multipart/form-data">
+        <tr>
+            <td><a href="{{ url_for('home') }}">Home</a></td>
+            <td><a href="{{ url_for('login') }}">Staff Login</a></td>
+            <td><a href="{{ url_for('product_register') }}">Product Register</a></td>
+        </tr>
+        <table border="1" bgcolor="pink" width="400">
+
+            <tr>
+                <td>
+                    Country:<select name="country" id="country" required="required">
+                    <option value="">Please select</option>
+                    <option value="French">French</option>
+                    <option value="Japan">Japan</option>
+                </select>
+
+                </td>
+
+                <td>
+                    <input type="text" name="brand"/>
+                </td>
+                <td>
+                    <input type="text" name="productName"/>
+                </td>
+            </tr>
+            {% if filename %}
+            <div>
+                <img src="{{ url_for('display_image', filename=filename) }}" width="200">
+            </div>
+            {% endif %}
+            <tr>
+                <td>
+                    Image1:
+                    <dl>
+                        <a href="https://oilybeauty.herokuapp.com/static/uploads/ob0001.PNG" ><img src="https://oilybeauty.herokuapp.com/static/uploads/ob0001.PNG" width="150"></a>
+                    </dl>
+                </td>
+                <td>
+                    Image2:
+                    <dl>
+                        <img src="{{ url_for('display_image', filename= 'ob0001.PNG') }}" width="150">
+                    </dl>
+                </td>
+                <td>
+                    Image3:
+                    <dl>
+                            <img src="https://oilybeauty.herokuapp.com/static/uploads/ob0001.PNG" width="150">
+                    </dl>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Image4:
+                    <dl>
+                            <img src="https://oilybeauty.herokuapp.com/static/uploads/ob0001.PNG" width="150">
+                    </dl>
+                </td>
+                <td>
+                    Image5:
+                    <dl>
+                            <img src="https://oilybeauty.herokuapp.com/static/uploads/ob0001.PNG" width="150">
+                    </dl>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Quantity:<input type="number" name="quantity" value={{ quantity }}/>
+                </td>
+                <td>
+                    Price:<input type="number" name="price" value={{ price }}/>
+                </td>
+                <td>
+                    Expire date(yyyymmdd): <input type="text" name="expireDate" value={{ expireDate }}>
+                </td>
+
+            </tr>
+
+
+            <tr>
+                <td>
+
+
+                </td>
+                <td>
+
+                </td>
+
+            </tr>
+            <br>
+
+            <br>
+
+            <tr>
+                <td colspan="3" width="400">
+                    Detail :<textarea name="textArea" required="required" rows="4" cols="60"></textarea>
+                </td>
+            </tr>
+
+        </table>
+    </form>
+
+    <br>
+    <br>
+    <!--    <h2>Job Search</h2>-->
+    <!--    <form action="{{ url_for('job_search')}}" method="post">-->
+    <!--        <table align="left" border="1" width="400">-->
+    <!--            <tr>-->
+    <!--                <td align="center" width="200">-->
+    <!--                    State:-->
+    <!--                    <select name="stateSearch" id="stateSearch">-->
+    <!--                        <option value="ALL">ALL</option>-->
+    <!--                        <option value="AL">AL</option>-->
+    <!--                        <option value="AK">AK</option>-->
+    <!--                        <option value="AZ">AZ</option>-->
+    <!--                        <option value="AR">AR</option>-->
+    <!--                        <option value="CA">CA</option>-->
+    <!--                        <option value="CO">CO</option>-->
+    <!--                        <option value="CT">CT</option>-->
+    <!--                        <option value="DE">DE</option>-->
+    <!--                        <option value="FL">FL</option>-->
+    <!--                        <option value="GA">GA</option>-->
+    <!--                        <option value="HI">HI</option>-->
+    <!--                        <option value="ID">ID</option>-->
+    <!--                        <option value="IL">IL</option>-->
+    <!--                        <option value="IN">IN</option>-->
+    <!--                        <option value="IA">IA</option>-->
+    <!--                        <option value="KS">KS</option>-->
+    <!--                        <option value="KY">KY</option>-->
+    <!--                        <option value="LA">LA</option>-->
+    <!--                        <option value="ME">ME</option>-->
+    <!--                        <option value="MD">MD</option>-->
+    <!--                        <option value="MA">MA</option>-->
+    <!--                        <option value="MI">MI</option>-->
+    <!--                        <option value="MN">MN</option>-->
+    <!--                        <option value="MS">MS</option>-->
+    <!--                        <option value="MO">MO</option>-->
+    <!--                        <option value="MT">MT</option>-->
+    <!--                        <option value="NE">NE</option>-->
+    <!--                        <option value="NV">NV</option>-->
+    <!--                        <option value="NH">NH</option>-->
+    <!--                        <option value="NJ">NJ</option>-->
+    <!--                        <option value="NM">NM</option>-->
+    <!--                        <option value="NY">NY</option>-->
+    <!--                        <option value="NC">NC</option>-->
+    <!--                        <option value="ND">ND</option>-->
+    <!--                        <option value="OH">OH</option>-->
+    <!--                        <option value="OK">OK</option>-->
+    <!--                        <option value="OR">OR</option>-->
+    <!--                        <option value="PA">PA</option>-->
+    <!--                        <option value="RI">RI</option>-->
+    <!--                        <option value="SC">SC</option>-->
+    <!--                        <option value="SD">SD</option>-->
+    <!--                        <option value="TN">TN</option>-->
+    <!--                        <option value="TX">TX</option>-->
+    <!--                        <option value="UT">UT</option>-->
+    <!--                        <option value="VT">VT</option>-->
+    <!--                        <option value="VA">VA</option>-->
+    <!--                        <option value="WA">WA</option>-->
+    <!--                        <option value="WV">WV</option>-->
+    <!--                        <option value="WI">WI</option>-->
+    <!--                        <option value="WY">WY</option>-->
+    <!--                    </select>-->
+    <!--                </td>-->
+    <!--                <td>-->
+    <!--                    <button type="submit" class="btn btn-primary btn-block btn-large">Job Search</button>-->
+    <!--                </td>-->
+    <!--            </tr>-->
+    <!--        </table>-->
+    <!--    </form>-->
+
+    <!--    <br>-->
+
+    <!--    <br>-->
+
+    <!--    {{ shop_text }}-->
+
+    <!--    <p> Search Result: {{ search_result }}</p>-->
+
+    <!--    <table title="Search" border="1">-->
+    <!--        <tr>-->
+    <!--            <td>Email</td>-->
+    <!--            <td>Phone</td>-->
+    <!--            <td>Contact Person</td>-->
+    <!--            <td>State</td>-->
+    <!--            <td>City</td>-->
+    <!--            <td>Position</td>-->
+    <!--            <td>Type</td>-->
+    <!--            <td>Wage per day</td>-->
+    <!--            <td width="400">Detail</td>-->
+    <!--            <td>Date</td>-->
+    <!--        </tr>-->
+    <!--        {%for contact in job_array%}-->
+    <!--        <tr style="height:40px ">-->
+    <!--            {% set list1 = contact.split(',') %}-->
+    <!--            {% for item in list1 %}-->
+    <!--            <td>{{ item }}</td>-->
+    <!--            {% endfor %}-->
+    <!--        </tr>-->
+    <!--        {% endfor%}-->
+
+    <!--    </table>-->
+    <!--    <tr>-->
+    <!--        <img src="{{url_for('static', filename='job_bar.png')}}" align="middle"/>-->
+    <!--    </tr>-->
+    <!--    <tr>-->
+    <!--        <img src="{{url_for('static', filename='job_pie.png')}}" align="middle"/>-->
+    <!--    </tr>-->
+</div>
+
+</body>
+</html>
