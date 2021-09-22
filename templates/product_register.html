@@ -43,9 +43,14 @@
                     <input type="text" name="productName" placeholder="Product Name" required="required" minlength="5"/>
                 </td>
             </tr>
+              <tr>
+                <td colspan="3" width="400">
+                    Detail :<textarea name="textArea" required="required" rows="4" cols="60"></textarea>
+                </td>
+            </tr>
             {% if filename %}
             <div>
-                <img src="{{ url_for('display_image', filename=filename) }}" width="200" >
+                <img src="{{ url_for('display_image', filename=filename) }}" width="200">
             </div>
             {% endif %}
             <tr>
@@ -59,23 +64,59 @@
                 </td>
 
                 <td>
-                    Quantity:<input type="number" name="quantity" placeholder="Quantity" required="required" minlength="1"
-                                    value="1"/>
+                    Upload Image1:
+                    <dl>
+                        <p>
+                            <input type="file" name="file1" class="form-control" autocomplete="off" required="required">
+                        </p>
+                    </dl>
                 </td>
+                <td>
+                    Upload Image2:
+                    <dl>
+                        <p>
+                            <input type="file" name="file2" class="form-control" autocomplete="off" required="required">
+                        </p>
+                    </dl>
+                </td>
+
+            </tr>
+              <tr>
+                <td>
+                    Upload Image3:
+                    <dl>
+                        <p>
+                            <input type="file" name="file3" class="form-control" autocomplete="off" >
+                        </p>
+                    </dl>
+                </td>
+
+                <td>
+                    Upload Image4:
+                    <dl>
+                        <p>
+                            <input type="file" name="file4" class="form-control" autocomplete="off" >
+                        </p>
+                    </dl>
+                </td>
+                <td>
+
+
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    Quantity:<input type="number" name="quantity" placeholder="Quantity" required="required" value="1" >
+
+                </td>
+
                 <td>
                     Price:<input type="number" name="price" placeholder="Price" required="required" value="1"/>
                 </td>
-            </tr>
-            <tr>
-                <td>
-                    :<select name="">
-                    <option value=""></option>
-                    <option value=""></option>
-                </select>
-                </td>
                 <td>
                     Expire date:<input type="number" name="expireDate" placeholder="Expire Date (yyyymmdd)"
-                                       required="required" value={{ expireDate }}    minlength="6"/>
+                                       required="required" value={{ expireDate }} minlength="6"/>
                 </td>
 
             </tr>
@@ -83,11 +124,7 @@
 
             <br>
 
-            <tr>
-                <td colspan="3" width="400">
-                    Detail :<textarea name="textArea" required="required" rows="4" cols="60"></textarea>
-                </td>
-            </tr>
+
             <tr>
                 <td colspan="3" align="center">
                     <p>

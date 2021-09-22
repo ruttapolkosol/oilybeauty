@@ -18,14 +18,16 @@
 
     <h2>Product Detail</h2>
 
-    <form method="post" action="/" enctype="multipart/form-data">
+    <form method="post" action="/detail/{{ id }}" >
         <tr>
             <td><a href="{{ url_for('home') }}">Home</a></td>
             <td><a href="{{ url_for('login') }}">Staff Login</a></td>
-            <td><a href="{{ url_for('product_register') }}">Product Register</a></td>
+            <td><a href="{{ url_for('product') }}">Product Register</a></td>
         </tr>
         <table border="1" bgcolor="pink" width="400">
-
+            <td colspan="4">
+                    ID:<input type="text" name="id" value="{{ id }}" disabled="disabled">
+                </td>
             <tr>
                 <td>
                     Country:<input type="text" name="country" value="{{ country }}">
@@ -47,7 +49,7 @@
                 <td>
                     Image:
                     <dl>
-                        <a href="{{ url_for('display_image', filename= img) }}" ><img src="https://oilybeauty.herokuapp.com/static/uploads/ob0001.PNG" width="150"></a>
+                        <a href="{{ url_for('display_image', filename= img) }}" ><img src="{{ url_for('display_image', filename= img) }}" width="150"></a>
                     </dl>
                 </td>
                 <td>
@@ -86,13 +88,13 @@
             </tr>
             <tr>
                 <td>
-                    In Stock:<input type="number" name="quantity" value={{ quantity }}/>
+                    In Stock:<input type="number" name="quantity" value={{ quantity }}>
                 </td>
                 <td>
-                    Price:<input type="number" name="price" value={{ price }}/>
+                    Price:<input type="number" name="price" value="{{ price }}" />
                 </td>
                 <td>
-                    Expire date(yyyymmdd): <input type="text" name="expireDate" value={{ expireDate }}>
+                    Expire date(yyyymmdd): <input type="text" name="expireDate" value="{{ expireDate }}" maxlength="8" size="5">
                 </td>
 
             </tr>
@@ -113,17 +115,26 @@
             <br>
 
 
+            {% if user %}
             <tr>
-                <td>
-                    Sell:<input type="number" name="sellQuanlity" />
+                <td>user:{{ user }}</td>
+                <td width="50">
+                    Sell:<input type="number" name="sellQuantity" value="0" onKeyPress="if(this.value.length==4) return false;" width="50"/>
                 </td>
                 <td>
-                   Sell price:<input type="number" name="sellPrice" />
+                   Sell price:<input type="number" name="sellPrice" value="{{ price }}"/>
                 </td>
                 <td>
-                   Sell total:<input type="number" name="sellPrice" />
+                   Sell total:<input type="number" name="sellPrice" value="" />
+                </td>
+
+            </tr>
+            <tr>
+                <td colspan="4" align="center">
+                    <button type="submit" >Update</button>
                 </td>
             </tr>
+        {% endif %}
         </table>
     </form>
 

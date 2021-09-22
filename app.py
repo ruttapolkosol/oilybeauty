@@ -87,8 +87,9 @@ def home():
         textArea = textArea.replace(",", "   ")
         fileName = val.get("fileName")
         quantity = val.get("quantity")
-        amount = val.get("amount")
+        quantity = str(quantity)
         price = val.get("price")
+        price = str(price)
         expireDate = val.get("expireDate")
 
 
@@ -105,10 +106,12 @@ def home():
         print(type(pathlib.Path().resolve()))
         if str(pathlib.Path().resolve()) == '/app':
             print('    ////// app' )
-            image = "https://oilybeauty.herokuapp.com/static/uploads/ob0001.PNG"
+            image = "https://oilybeauty.herokuapp.com/static/uploads/"+fileName
+            image1 = "https://oilybeauty.herokuapp.com/static/uploads/"+fileName1
         else:
             print('    ////// not app')
-            image = "/static/uploads/ob0001.png"
+            image = "/static/uploads/"+fileName
+            image1 = "/static/uploads/"+fileName1
         #imagepath = "{{ url_for('display_image', filename= "+ "ob0001.png" +") }}"
 
         today_list = today_list + image+ ","+ image+ ", "+ pk +" ," + country + "," + brand + "," + productName +" , " +textArea +  "," + quantity + " , " + price + "," + expireDate + ","+time
@@ -202,18 +205,13 @@ def product():
     expireDate = today + datetime.timedelta(days=365)
     expireDate = expireDate.strftime("%Y%m%d")
 
-    return render_template('product_register.html',expireDate = expireDate)
+    return render_template('product_register.html',expireDate = expireDate,user= g.user.username)
 
 @app.route('/detail/<string:id>', methods=['GET', 'POST'])
 def detail(id):
+    if request.method == 'POST':
+        print(' update ')
 
-    # if not g.user:
-    #     return redirect(url_for('login'))
-    # show the form, it wasn't submitted
-    print(id)
-    print(len(id))
-    print(id.strip())
-    print(len(id))
     id = id.strip();
     if not firebase_admin._apps:
         cred = credentials.Certificate('firebase-sdk.json')
@@ -224,22 +222,69 @@ def detail(id):
     ref = db.reference('Product')
 
     #snapshot = ref.order_by_key().get()
-    snapshot = ref.order_by_child("pk").equal_to(id).get()
-    for user, val in snapshot.items():
-        country = val.get("country")
-        brand = val.get("brand")
-        productName = val.get("productName")
-        textArea = val.get("textArea")
-        textArea = textArea.replace(",", "   ")
-        img = val.get("fileName")
-        img1 = val.get("fileName1")
-        img2 = val.get("fileName2")
-        img3 = val.get("fileName3")
-        img4 = val.get("fileName4")
-        quanlity = val.get("quanlity")
-        price = val.get("price")
-        expireDate = val.get("expireDate")
-        time = val.get("time")
+    if request.method == 'POST':
+        #ref = db.reference('Product')
+        # pk_ref = ref.child("pk").equal_to("00000033333")
+        # pk_ref.update({
+        #     'price': '6'
+        # })
+        ref = db.reference("Product")
+        best_sellers = ref.get()
+
+        quantity = request.form.get("quantity")
+
+        sellQuantity = request.form.get("sellQuantity")
+        remain = int(quantity) - int(sellQuantity)
+        priceWeb = request.form.get("price")
+        print(best_sellers)
+        for key, val in best_sellers.items():
+            if (val["pk"] == id):
+
+                ref.child(key).update({"quantity": str(remain)})
+
+                country = val.get("country")
+                brand = val.get("brand")
+                productName = val.get("productName")
+                textArea = val.get("textArea")
+                textArea = textArea.replace(",", "   ")
+                img = val.get("fileName")
+                img1 = val.get("fileName1")
+                img2 = val.get("fileName2")
+                img3 = val.get("fileName3")
+                img4 = val.get("fileName4")
+                quantiity = val.get("quantity")
+                quantity = str(quantity)
+
+                price = val.get("price")
+                if priceWeb!= price :
+                    ref.child(key).update({"price": str(priceWeb)})
+                price = str(price)
+                expireDate = val.get("expireDate")
+                print('update')
+
+        return redirect(url_for('home'))
+    else :
+        snapshot = ref.order_by_child("pk").equal_to(id).get()
+        for user, val in snapshot.items():
+            country = val.get("country")
+            brand = val.get("brand")
+            productName = val.get("productName")
+            textArea = val.get("textArea")
+            textArea = textArea.replace(",", "   ")
+            img = val.get("fileName")
+            img1 = val.get("fileName1")
+            img2 = val.get("fileName2")
+            img3 = val.get("fileName3")
+            img4 = val.get("fileName4")
+            quantity = val.get("quantity")
+
+            price = val.get("price")
+
+            quantity = str(quantity)
+            price = str(price)
+
+            expireDate = val.get("expireDate")
+            time = val.get("time")
 
         # print(phone)
         # print(state)
@@ -249,7 +294,7 @@ def detail(id):
         # print(wage)
         # print(time)
 
-    return render_template('product_detail.html' , country=country,brand = brand,productName = productName,img = img,img1= img1)
+        return render_template('product_detail.html',id = id,user = g.user.username , country=country,brand = brand,productName = productName,img = img,img1= img1, quantity = quantity,price = price, expireDate = expireDate)
 
 @app.route('/edit/<string:id>', methods=['GET', 'POST'])
 def edit(id):
@@ -277,13 +322,36 @@ def product_register():
     if 'file' not in request.files:
         flash('No file part')
         return redirect(request.url)
+
     file = request.files['file']
+    if 'file1' not in request.files:
+        flash('No file1 part')
+        return redirect(request.url)
+
+    file = request.files['file']
+    file1 = request.files['file1']
+
     if file.filename == '':
         flash('No image selected for uploading')
         return redirect(request.url)
+
+    if file1.filename == '':
+        flash('No image1 selected for uploading')
+        return redirect(request.url)
+
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        # print('upload_image filename: ' + filename)
+        flash('Image successfully uploaded and displayed below')
+    #    return render_template('product_register.html', filename=filename)
+    else:
+        flash('Allowed image types are - png, jpg, jpeg, gif')
+        return redirect(request.url)
+
+    if file1 and allowed_file(file1.filename):
+        filename1 = secure_filename(file1.filename)
+        file1.save(os.path.join(app.config['UPLOAD_FOLDER'], filename1))
         # print('upload_image filename: ' + filename)
         flash('Image successfully uploaded and displayed below')
     #    return render_template('product_register.html', filename=filename)
@@ -324,6 +392,7 @@ def product_register():
             'brand': brand,
             'productName': productName,
             'fileName': filename,
+            'fileName1': filename1,
             'quantity': quantity,
             'price': price,
             'expireDate': expireDate,
