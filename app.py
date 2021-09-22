@@ -117,6 +117,41 @@ def home():
         today_list = today_list + image+ ","+ image+ ", "+ pk +" ," + country + "," + brand + "," + productName +" , " +textArea +  "," + quantity + " , " + price + "," + expireDate + ","+time
         today_array.append(today_list)
 
+        ref = db.reference('Sell')
+        snapshot = ref.order_by_child("month").equal_to("09").get()
+
+        statel = []
+        share = []
+
+        sell_array = []
+        brand_array = []
+
+        for user, val in snapshot.items():
+            today_list = ""
+
+            brand = val.get("brand")
+            sellQuantity = val.get("sellQuantity")
+
+            sell_array.append(int(sellQuantity))
+            brand_array.append(str(brand))
+
+        import matplotlib.pyplot as plt
+        import numpy as np
+        x = np.arange(len(brand_array))
+
+        y1 = sell_array
+        width = 0.20
+        plt.bar(x - 0.2, y1, width)
+        plt.xticks(x, brand_array)
+        plt.xlabel("Month 09")
+        plt.ylabel("Sell")
+        plt.legend(["Sell"])
+
+        import matplotlib.pyplot as plt
+
+        plt.savefig('static/sell_by_month_bar' + '.png')
+        plt.close()
+
     return render_template('index.html',today=today_array)
 
 
@@ -228,16 +263,39 @@ def detail(id):
         # pk_ref.update({
         #     'price': '6'
         # })
-        ref = db.reference("Product")
-        best_sellers = ref.get()
+
 
         quantity = request.form.get("quantity")
-
+        brand = request.form.get("brand")
+        productName = request.form.get("productName")
         sellQuantity = request.form.get("sellQuantity")
         remain = int(quantity) - int(sellQuantity)
         priceWeb = request.form.get("price")
-        print(best_sellers)
-        for key, val in best_sellers.items():
+
+        sellQuantity =  request.form.get("sellQuantity")
+        if int(sellQuantity) >0 :
+            ref = db.reference("Sell")
+            sell = ref.get()
+            import datetime
+            nowtime = datetime.datetime.now()
+            nowtime = nowtime.strftime("%Y%m%d")
+            month = datetime.datetime.now().strftime("%m")
+            year = datetime.datetime.now().strftime("%Y")
+            ref.push(
+                {
+                    'pk': brand + productName,
+                    'brand': brand,
+                    'productName': productName,
+                    'month': month,
+                    'year': year,
+                    'sellQuantity': sellQuantity,
+                    'time': nowtime
+                }
+            )
+        ref = db.reference("Product")
+        update = ref.get()
+        for key, val in update.items():
+
             if (val["pk"] == id):
 
                 ref.child(key).update({"quantity": str(remain)})
