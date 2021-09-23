@@ -137,6 +137,7 @@ def home():
 
         import matplotlib.pyplot as plt
         import numpy as np
+
         x = np.arange(len(brand_array))
 
         y1 = sell_array
@@ -181,6 +182,7 @@ def upload_image():
 def display_image(filename):
     # print('display_image filename: ' + filename)
     return redirect(url_for('static', filename='uploads/' + filename), code=301)
+
 @app.route('/service', methods=['GET'])
 def service():
     return render_template('index.html')

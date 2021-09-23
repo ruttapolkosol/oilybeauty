@@ -28,6 +28,7 @@ tr:nth-child(even) {
             <td><a href="{{ url_for('login') }}">Staff Login (soon)</a></td>
             <td><a href="{{ url_for('product') }}">Product register(soon)</a></td>
             <td><a href="{{ url_for('stock') }}">Update product stock(soon)</a></td>
+            <td><a href="{{ url_for('sell_by_month') }}">View all stock(soon)</a></td>
             <td><a href="{{ url_for('sell_by_month') }}">Sell by month(soon)</a></td>
             <td><a href="{{ url_for('sell_by_brand') }}">Sell by brand(soon)</a></td>
             <td><a href="{{ url_for('contactUs') }}">Contact Us(soon)</a></td>
@@ -37,6 +38,13 @@ tr:nth-child(even) {
         <h2>Product update stock</h2>
 
         <table border="1">
+            <tr>
+                <td colspan="3" > <img src="{{url_for('static', filename='sell_by_month_bar.png')}}" align="middle" width="450" height="250"/></td>
+                <td colspan="3" > <img src="{{url_for('static', filename='sell_by_month_bar.png')}}" align="middle" width="450" height="250"/></td>
+            </tr>
+            <tr>  <td colspan="11"><hr style="height:5px; width:100%; border-width:0; color:green; background-color:green"></td></tr>
+
+            <tr></tr>
             <tr>
                 <td>Image</td>
                 <td>Image</td>
@@ -74,7 +82,7 @@ tr:nth-child(even) {
                 {% endfor %}
             </tr>
             {% endfor%}
-            <tr> <img src="{{url_for('static', filename='sell_by_month_bar.png')}}" align="middle"/></tr>
+
         </table>
     </form>
 </div>
