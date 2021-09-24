@@ -3,7 +3,7 @@ from time import strftime
 from time import strftime
 from werkzeug.utils import secure_filename
 import snapshot as snapshot
-from flask import Flask,flash, g, redirect, request, jsonify, render_template, session, url_for
+from flask import Flask, flash, g, redirect, request, jsonify, render_template, session, url_for
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
@@ -18,6 +18,7 @@ class User:
     def __repr__(self):
         return f'<User: {self.username}>'
 
+
 UPLOAD_FOLDER = 'static/uploads/'
 app = Flask(__name__)
 app.secret_key = 'somesecretkeythatonlyishouldknow'
@@ -30,18 +31,17 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+
 users = []
+users.append(User(id=0, username='guest', password='guest'))
 users.append(User(id=1, username='march', password='310090'))
 users.append(User(id=2, username='', password=''))
-users.append(User(id=3, username='', password=''))
-
-
 
 
 @app.route('/')
 def home():
     import os
-    #print(os.path.realpath)
+    # print(os.path.realpath)
     import pathlib
     print(pathlib.Path(__file__).parent.resolve())
     print(pathlib.Path().resolve())
@@ -72,9 +72,12 @@ def home():
     ref = db.reference('Product')
     # print(' '+stateSearch)
 
-    #snapshot = ref.order_by_child("time").equal_to(today).get()
+    # snapshot = ref.order_by_child("time").equal_to(today).get()
     snapshot = ref.order_by_child("expireDate").limit_to_last(20).get()
+    quantityl = []
+    productNamel = []
     today_array = []
+
     for user, val in snapshot.items():
         today_list = ""
         pk = val.get("pk")
@@ -92,9 +95,7 @@ def home():
         price = str(price)
         expireDate = val.get("expireDate")
 
-
         time = val.get("time")
-
 
         # print(phone)
         # print(state)
@@ -105,23 +106,36 @@ def home():
         # print(time)
         print(type(pathlib.Path().resolve()))
         if str(pathlib.Path().resolve()) == '/app':
-            print('    ////// app' )
-            image = "https://oilybeauty.herokuapp.com/static/uploads/"+fileName
-            image1 = "https://oilybeauty.herokuapp.com/static/uploads/"+fileName1
+            print('    ////// app')
+            image = "https://oilybeauty.herokuapp.com/static/uploads/" + fileName
+            image1 = "https://oilybeauty.herokuapp.com/static/uploads/" + fileName1
         else:
             print('    ////// not app')
-            image = "/static/uploads/"+fileName
-            image1 = "/static/uploads/"+fileName1
-        #imagepath = "{{ url_for('display_image', filename= "+ "ob0001.png" +") }}"
+            image = "/static/uploads/" + fileName
+            image1 = "/static/uploads/" + fileName1
+        # imagepath = "{{ url_for('display_image', filename= "+ "ob0001.png" +") }}"
 
-        today_list = today_list + image+ ","+ image+ ", "+ pk +" ," + country + "," + brand + "," + productName +" , " +textArea +  "," + quantity + " , " + price + "," + expireDate + ","+time
+        today_list = today_list + image + "," + image + ", " + pk + " ," + country + "," + brand + "," + productName + " , " + textArea + "," + quantity + " , " + price + "," + expireDate + "," + time
         today_array.append(today_list)
+
+
+
+
+        if productNamel.__contains__(productName) == False:
+            intStock = 0
+            ref = db.reference('Product')
+            pricesnapshot = ref.order_by_child('productName').equal_to(productName).get()
+            for user1, val1 in pricesnapshot.items():
+                intStock = intStock + int(val1.get('quantity'))
+            # print(' '+str(inttemp))
+            quantityl.append(intStock)
+            productNamel.append(productName)
+        else:
+            intStock = 0
+            # share.append(inttemp)
 
         ref = db.reference('Sell')
         snapshot = ref.order_by_child("month").equal_to("09").get()
-
-        statel = []
-        share = []
 
         sell_array = []
         brand_array = []
@@ -153,7 +167,24 @@ def home():
         plt.savefig('static/sell_by_month_bar' + '.png')
         plt.close()
 
-    return render_template('index.html',today=today_array)
+    pieLabels = productNamel
+    populationShare = quantityl
+
+    figureObject, axesObject = plt.subplots()
+
+    # Draw the pie chart
+    axesObject.pie(populationShare,
+                   labels=pieLabels,
+                   autopct='%1.2f',
+                   startangle=90)
+
+    # Aspect ratio - equal means pie is a circle
+    axesObject.axis('equal')
+
+    plt.savefig('static/productName_pie' + '.png')
+    plt.close()
+
+    return render_template('index.html', today=today_array)
 
 
 @app.route('/upload_image', methods=['POST'])
@@ -183,13 +214,16 @@ def display_image(filename):
     # print('display_image filename: ' + filename)
     return redirect(url_for('static', filename='uploads/' + filename), code=301)
 
+
 @app.route('/service', methods=['GET'])
 def service():
     return render_template('index.html')
 
+
 @app.route('/contactUs', methods=['GET'])
 def contactUs():
     return render_template('index.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -233,7 +267,6 @@ def sell():
 
 @app.route('/product', methods=['GET', 'POST'])
 def product():
-
     if not g.user:
         return redirect(url_for('login'))
     # show the form, it wasn't submitted
@@ -242,10 +275,20 @@ def product():
     expireDate = today + datetime.timedelta(days=365)
     expireDate = expireDate.strftime("%Y%m%d")
 
-    return render_template('product_register.html',expireDate = expireDate,user= g.user.username)
+    return render_template('product_register.html', expireDate=expireDate, user=g.user.username)
+
 
 @app.route('/detail/<string:id>', methods=['GET', 'POST'])
 def detail(id):
+    g.user = None
+
+    if 'user_id' in session:
+        user = [x for x in users if x.id == session['user_id']][0]
+        g.user = user
+    else:
+        g.user = (User(id=0, username='guest', password='guest'))
+
+
     if request.method == 'POST':
         print(' update ')
 
@@ -258,14 +301,13 @@ def detail(id):
 
     ref = db.reference('Product')
 
-    #snapshot = ref.order_by_key().get()
+    # snapshot = ref.order_by_key().get()
     if request.method == 'POST':
-        #ref = db.reference('Product')
+        # ref = db.reference('Product')
         # pk_ref = ref.child("pk").equal_to("00000033333")
         # pk_ref.update({
         #     'price': '6'
         # })
-
 
         quantity = request.form.get("quantity")
         brand = request.form.get("brand")
@@ -274,8 +316,8 @@ def detail(id):
         remain = int(quantity) - int(sellQuantity)
         priceWeb = request.form.get("price")
 
-        sellQuantity =  request.form.get("sellQuantity")
-        if int(sellQuantity) >0 :
+        sellQuantity = request.form.get("sellQuantity")
+        if int(sellQuantity) > 0:
             ref = db.reference("Sell")
             sell = ref.get()
             import datetime
@@ -316,14 +358,14 @@ def detail(id):
                 quantity = str(quantity)
 
                 price = val.get("price")
-                if priceWeb!= price :
+                if priceWeb != price:
                     ref.child(key).update({"price": str(priceWeb)})
                 price = str(price)
                 expireDate = val.get("expireDate")
                 print('update')
 
         return redirect(url_for('home'))
-    else :
+    else:
         snapshot = ref.order_by_child("pk").equal_to(id).get()
         for user, val in snapshot.items():
             country = val.get("country")
@@ -354,24 +396,27 @@ def detail(id):
         # print(wage)
         # print(time)
 
-        return render_template('product_detail.html',id = id,user = g.user.username , country=country,brand = brand,productName = productName,img = img,img1= img1, quantity = quantity,price = price, expireDate = expireDate)
+        return render_template('product_detail.html', id=id, user=g.user.username, country=country, brand=brand,
+                               productName=productName, img=img, img1=img1, quantity=quantity, price=price,
+                               expireDate=expireDate)
+
 
 @app.route('/edit/<string:id>', methods=['GET', 'POST'])
 def edit(id):
-
     # if not g.user:
     #     return redirect(url_for('login'))
     # show the form, it wasn't submitted
     print(id)
     return render_template('product_register.html')
 
+
 @app.before_request
 def before_request():
-    g.user = None
+     g.user = None
 
-    if 'user_id' in session:
-        user = [x for x in users if x.id == session['user_id']][0]
-        g.user = user
+     if 'user_id' in session:
+         user = [x for x in users if x.id == session['user_id']][0]
+         g.user = user
 
 
 @app.route('/product_register', methods=['POST'])
@@ -426,7 +471,7 @@ def product_register():
     quantity = request.form.get("quantity")
     price = request.form.get("price")
     expireDate = request.form.get("expireDate")
-    shipOut= request.form.get("shipOut")
+    shipOut = request.form.get("shipOut")
     textArea = request.form.get("textArea")
 
     if 'user_id' in session:
@@ -436,8 +481,9 @@ def product_register():
 
     if not firebase_admin._apps:
         cred = credentials.Certificate('firebase-sdk.json')
-        firebase_admin.initialize_app(cred, {'databaseURL': 'https://microbittempreader-16e2d-default-rtdb.firebaseio.com/'
-        })
+        firebase_admin.initialize_app(cred,
+                                      {'databaseURL': 'https://microbittempreader-16e2d-default-rtdb.firebaseio.com/'
+                                       })
     import datetime
     nowtime = datetime.datetime.now()
 
@@ -447,7 +493,7 @@ def product_register():
     ref = db.reference('Product')
     ref.push(
         {
-            'pk' : brand+productName,
+            'pk': brand + productName,
             'country': country,
             'brand': brand,
             'productName': productName,
@@ -474,8 +520,9 @@ def job_search():
 
     if not firebase_admin._apps:
         cred = credentials.Certificate('firebase-sdk.json')
-        firebase_admin.initialize_app(cred, { 'databaseURL': 'https://microbittempreader-16e2d-default-rtdb.firebaseio.com/'
-        })
+        firebase_admin.initialize_app(cred,
+                                      {'databaseURL': 'https://microbittempreader-16e2d-default-rtdb.firebaseio.com/'
+                                       })
 
     stateSearch = request.form.get("stateSearch")
     ref = db.reference('Job')
@@ -1135,4 +1182,4 @@ if __name__ == "__main__":
     # except ValueError:
     #     PORT = 5557
     # app.run(HOST, PORT)
-     app.run(debug=True)
+    app.run(debug=True)
